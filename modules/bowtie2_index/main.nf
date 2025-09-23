@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 process BOWTIE2_INDEX {
-    label 'process_high'
+    label 'process_single'
     conda 'envs/bowtie2_env.yml'
     publishDir params.outdir, mode:'copy'
 
