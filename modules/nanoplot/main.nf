@@ -3,7 +3,7 @@
 process NANOPLOT {
     label 'process_single'
     conda 'envs/nanoplot_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/nanoplot"
 
     input:
     tuple val(name), path(nano), path(read1), path(read2)

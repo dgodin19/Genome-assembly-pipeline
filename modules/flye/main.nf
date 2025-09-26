@@ -3,13 +3,13 @@
 process FLYE {
     label 'process_high'
     conda 'envs/flye_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/flye"
 
     input:
     tuple val(name),path(nano)
 
     output:
-    path("assembly.fasta")
+    tuple val(name), path("assembly.fasta")
 
     script:
     """

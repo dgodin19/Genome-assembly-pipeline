@@ -3,7 +3,7 @@
 process FILTLONGER {
     label 'process_single'
     conda 'envs/filtlong_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/filtlong"
 
     input:
     tuple val(name), path(nano)

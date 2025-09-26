@@ -67,13 +67,21 @@ workflow {
     // Download the canonical reference genome 
     NCBI_DATASETS(params.ref_genome)
 
+    ref_ch = NCBI_DATASETS.out
+
     // Run QUAST comparing the final assembly with the reference genome
-    QUAST(PILON.out, NCBI_DATASETS.out)
+    PILON.out
+    .combine(ref_ch)
+    .map { name, genome, ref -> tuple(name, genome, "polished", ref) }
+    | QUAST
 
     // Run QUAST on the unpolished assembly
-    QUAST_UNPOLISHED(FLYE.out, NCBI_DATASETS.out)
+    FLYE.out
+    .combine(ref_ch)
+    .map { name, genome, ref -> tuple(name, genome, "unpolished", ref) }
+    | QUAST_UNPOLISHED
 
     // Run BUSCO PLOT on the BUSCO output
-    BUSCO_PLOT(BUSCO.out)
+    BUSCO_PLOT(BUSCO.out.busco_out)
     
 }

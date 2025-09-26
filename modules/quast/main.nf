@@ -1,20 +1,18 @@
 #!/usr/bin/env nextflow
 
-process QUAST{
+process QUAST {
     label 'process_medium'
     conda 'envs/quast_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/quast"
 
     input:
-    path(genome)
-    path(ref_genome)
+    tuple val(name), path(genome), val(tag), path(ref_genome)
 
     output:
-    path("${genome.baseName}/")
+    path("QUAST_${name}_${tag}/")
 
     shell:
-    """ 
-    quast.py -t $task.cpus -r $ref_genome -o $genome.baseName $genome
     """
-
+    quast.py -t $task.cpus -r $ref_genome -o QUAST_${name}_${tag} $genome
+    """
 }

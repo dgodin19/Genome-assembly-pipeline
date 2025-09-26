@@ -6,10 +6,10 @@ process BOWTIE2_INDEX {
     publishDir params.outdir, mode:'copy'
 
     input:
-    path(consensus)
+    tuple val(name), path(consensus)
 
     output:
-    tuple val("${consensus.baseName}"), path("bowtie2_index/")
+    tuple val(name), val(consensus.baseName), path("bowtie2_index/")
 
     shell:
     """ 

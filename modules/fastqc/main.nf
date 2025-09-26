@@ -3,7 +3,7 @@
 process FASTQC {
     label 'process_single'
     conda 'envs/fastqc_env.yml'
-    publishDir params.outdir, mode:'copy', pattern: "*.html"
+    publishDir "${params.outdir}/fastqc", pattern: "*.html"
 
     input:
     tuple val(name), path(read1), path(read2)

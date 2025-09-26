@@ -7,15 +7,14 @@ process SAMTOOLS_SORT {
     publishDir params.outdir, mode:'copy'
 
     input:
-    path(bam)
+    tuple val(name), path(bam)
 
     output:
-    path("${bam.baseName}.sorted.bam")
+    tuple val(name), path("${name}.sorted.bam")
 
     shell:
     """ 
-    samtools sort -@ $task.cpus $bam > ${bam.baseName}.sorted.bam
-    samtools index ${bam.baseName}.sorted.bam
+    samtools sort -@ $task.cpus -o ${name}.sorted.bam $bam
+    samtools index ${name}.sorted.bam
     """
-
 }

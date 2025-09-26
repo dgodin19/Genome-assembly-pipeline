@@ -3,7 +3,7 @@
 process BUSCO_PLOT {
     label 'process_single'
     conda 'envs/busco_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/busco"
 
     input:
     path(busco_results)

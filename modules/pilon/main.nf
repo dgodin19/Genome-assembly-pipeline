@@ -3,18 +3,19 @@
 process PILON {
     label 'process_high'
     conda 'envs/pilon_env.yml'
-    publishDir params.outdir, mode:'copy'
+    publishDir "${params.outdir}/pilon"
 
     input:
-    path(genome)
-    path(bam)
-    
+    tuple val(name), path(genome)
+    tuple val(name), path(bam)
+
     output:
-    path("*sorted.fasta")
+    tuple val(name), path("${name}.pilon.fasta")
 
     shell:
     """ 
-    pilon --genome $genome --frags $bam --output ${bam.baseName} -Xmx${task.cpus}G
+    pilon --genome $genome --frags $bam --output ${name} -Xmx32G
+    mv ${name}.fasta ${name}.pilon.fasta
     """
 
 }

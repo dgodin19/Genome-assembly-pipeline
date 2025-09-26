@@ -7,14 +7,14 @@ process BOWTIE2_ALIGN {
 
     input:
     tuple val(name), path(short1), path(short2)
-    tuple val(consensus), path(index)
+    tuple val(name), val(idxBase), path(indexDir)
 
     output:
-    path("${name}.bam")
+    tuple val(name), path("${name}.bam")
 
     shell:
     """ 
-    bowtie2 -x bowtie2_index/${consensus} -1 $short1 -2 $short2 | samtools view -bS - > ${name}.bam
+    bowtie2 -x ${indexDir}/${idxBase} -1 $short1 -2 $short2 | samtools view -bS - > ${name}.bam
     """
 
 }

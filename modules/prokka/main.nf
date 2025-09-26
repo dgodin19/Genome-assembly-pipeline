@@ -3,16 +3,16 @@
 process PROKKA {
     label 'process_single'
     conda "envs/prokka_env.yml"
-    publishDir params.outdir
+    publishDir "${params.outdir}/prokka"
 
     input:
-    path(fa)
+    tuple val(name), path(fa)
 
     output:
     path("**/*.gff"), emit: gff
 
     shell:
     """
-    prokka --cpus 1 --outdir annots/ --prefix genome $fa
+    prokka --cpus 1 --outdir annots/ --prefix $name $fa
     """
 }
