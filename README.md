@@ -19,7 +19,7 @@ The pipeline utilizes the following modules, found in the modules folder:
     NCBI_DATASETS: Downloading reference genomes
     QUAST & QUAST_UNPOLISHED: Assembly quality evaluation (for polished and unpolished assemblies)
 
-Folder Structure
+# Folder Structure
 
     main.nf: The central Nextflow pipeline script.
     modules/: Contains all process definitions as separate modules.
