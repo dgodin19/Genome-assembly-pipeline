@@ -5,8 +5,6 @@ include {BOWTIE2_INDEX} from './modules/bowtie2_index'
 include {BOWTIE2_ALIGN} from './modules/bowtie2_align'
 include {SAMTOOLS_SORT} from './modules/samtools'
 include {PILON} from './modules/pilon'
-
-// These are this week's modules
 include {BUSCO} from './modules/busco'
 include {NCBI_DATASETS} from './modules/ncbi_datasets_cli'
 include {QUAST} from './modules/quast'
@@ -16,17 +14,11 @@ include {BUSCO_PLOT} from './modules/busco_plot'
 
 workflow {
 
-
-    // Look in the nextflow.config file to see values for params
-    // This makes a "channel" with the files and info we need to run our pipeline
-
-    // This will make a channel with the information needed for the long reads
     Channel.fromPath(params.bac_samples)
     | splitCsv(header: true)
     | map { row -> tuple(row.name, file(row.nano))}
     | set { longread_ch }
 
-    // Use similar logic and make a channel for the short reads
     Channel.fromPath(params.bac_samples)
     | splitCsv(header: true)
     | map { row -> tuple(row.name, file(row.short1), file(row.short2))}
@@ -41,8 +33,7 @@ workflow {
     // Pass the filtered reads to the assembly tool
     FLYE(FILTLONGER.out)
 
-    // Week 2
-    
+
     //Align Short Reads For Polishing
 
     // Create an index of the assembly
@@ -57,8 +48,6 @@ workflow {
     // Short Read Polishing using the alignments
     PILON(FLYE.out, SAMTOOLS_SORT.out)
 
-    // THIS WEEK
-    // Annotate the polished assembly using Prokka
     PROKKA(PILON.out)
 
     // Run BUSCO on the Polished Assembly
